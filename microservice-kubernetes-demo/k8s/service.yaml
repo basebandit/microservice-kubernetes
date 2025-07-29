@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog
+  namespace: catalog
+spec:
+  selector:
+    app: microservices-kubernetes-demo-catalog
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+  namespace: order
+spec:
+  selector:
+    app: microservices-kubernetes-demo-order
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer
+  namespace: customer
+spec:
+  selector:
+    app: microservices-kubernetes-demo-customer
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache
+  namespace: apache
+spec:
+  selector:
+    app: microservices-kubernetes-demo-apache
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP

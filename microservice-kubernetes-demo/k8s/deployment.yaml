@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  namespace: catalog
+spec:
+  selector:
+    matchLabels:
+      app: microservices-kubernetes-demo-catalog
+  template:
+    metadata:
+      labels:
+        app: microservices-kubernetes-demo-catalog
+    spec:
+      containers:
+      - name: microservices-kubernetes-demo-catalog
+        image: 060309844053.dkr.ecr.eu-central-1.amazonaws.com/microservices-kubernetes-demo-catalog:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: awsecr-cred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache
+  namespace: apache
+spec:
+  selector:
+    matchLabels:
+      app: microservices-kubernetes-demo-apache
+  template:
+    metadata:
+      labels:
+        app: microservices-kubernetes-demo-apache
+    spec:
+      containers:
+      - name: microservices-kubernetes-demo-apache
+        image: 060309844053.dkr.ecr.eu-central-1.amazonaws.com/microservices-kubernetes-demo-apache:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: awsecr-cred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: order
+spec:
+  selector:
+    matchLabels:
+      app: microservices-kubernetes-demo-order
+  template:
+    metadata:
+      labels:
+        app: microservices-kubernetes-demo-order
+    spec:
+      containers:
+      - name: microservices-kubernetes-demo-order
+        image: 060309844053.dkr.ecr.eu-central-1.amazonaws.com/microservices-kubernetes-demo-order:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_CONFIG_LOCATION
+            value: "classpath:/application.properties,/config/application.properties"
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
+      volumes: 
+        - name: config
+          configMap:
+            name: order
+      imagePullSecrets:
+        - name: awsecr-cred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer
+  namespace: customer
+spec:
+  selector:
+    matchLabels:
+      app: microservices-kubernetes-demo-customer
+  template:
+    metadata:
+      labels:
+        app: microservices-kubernetes-demo-customer
+    spec:
+      containers:
+      - name: microservices-kubernetes-demo-customer
+        image: 060309844053.dkr.ecr.eu-central-1.amazonaws.com/microservices-kubernetes-demo-customer:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: awsecr-cred

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order
+  namespace: order
+data:
+  application.properties: |
+    catalog.service.host=catalog.catalog.svc.cluster.local
+    catalog.service.port=8080
+    customer.service.host=customer.customer.svc.cluster.local
+    customer.service.port=8080
+
